@@ -3,21 +3,58 @@
 #include<fstream>
 using namespace std;
 
+string CreatePIN()
+{
+    string PIN;
+    cout<<"CREATE A 5-DIGIT PASSWORD "<<endl;
+    getline(cin,PIN);
+
+    if(PIN.size()==5)
+    {
+        return PIN;
+    }
+
+    else
+    {
+        cout<<"INVALI PIN"<<endl;
+        return CreatePIN();
+    }
+}
+
 class account
 {
     public :
-    string AccountHolderName="qwertyui";;
-    string PIN="122";
-    string AccountType="qwerty";
-    vector <int> AccountNumber={1,2,3,4,5,6};
-    vector <int> PhNo{1,4,2,3,6,3,5,3,2,};
-    int age=90;
+    string AccountHolderName;
+    string PIN;
+    string AccountType;
+    int long long AccountNumber;
+    int long long PhNo;
+    int Age;
    
     public :
     void GetInfo()
     {
 
+      cout<<"ENTER THE ACCOUNT NUMBER "<<endl;
+      cin>>AccountNumber;
+
+      cout<<"ENTER THE ACCOUNT HOLDER NAME "<<endl;
+      cin.ignore();
+      getline(cin,AccountHolderName);
+
+      cout<<"ENTER THE ACCOUNT TYPR "<<endl;
+      getline(cin,AccountType);
+
+      PIN=CreatePIN();
+
+      cout<<"ENTER THE AGE OF "<<AccountHolderName<<endl;
+      cin>>Age;
+
+      cout<<"ENTER THE VALID PHNO OF "<<AccountHolderName<<endl;
+      cin>>PhNo;
+
     }
+
     void SaveData()
     {
 
@@ -27,6 +64,7 @@ class account
 
 int main()
 {
+    vector <account> accounts;
     cout<<"--------------------------------------------------------------------------------------------"<<endl;
     cout<<"=================================BANK MANAGEMENT SYSTEM====================================="<<endl;
     cout<<"--------------------------------------------------------------------------------------------"<<endl;
@@ -51,7 +89,9 @@ int main()
 
     case 1:
     {
-        cout<<"Development under progress";
+        account object;
+        object.GetInfo();
+        accounts.push_back(object);
         break;
     }
 
