@@ -3,6 +3,28 @@
 #include<fstream>
 using namespace std;
 
+class account
+{
+    public :
+    string AccountHolderName="qwertyui";;
+    string PIN="122";
+    string AccountType="qwerty";
+    vector <int> AccountNumber={1,2,3,4,5,6};
+    vector <int> PhNo{1,4,2,3,6,3,5,3,2,};
+    int age=90;
+   
+    public :
+    void GetInfo()
+    {
+
+    }
+    void SaveData()
+    {
+
+    }
+
+};
+
 int main()
 {
     cout<<"--------------------------------------------------------------------------------------------"<<endl;
