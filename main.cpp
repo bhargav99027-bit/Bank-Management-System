@@ -29,6 +29,7 @@ class account
     string AccountType;
     string AccountNumber;
     string PhNo;
+    string Balance;
     int Age;
    
     public :
@@ -46,6 +47,7 @@ class account
       getline(cin,AccountType);
 
       PIN=CreatePIN();
+      Balance="0.00";
 
       cout<<"ENTER THE AGE OF "<<AccountHolderName<<endl;
       cin>>Age;
@@ -140,6 +142,27 @@ int main()
     case 7:
     {
         cout<<"Development under progress";  
+        fstream file;
+        file.open("AccountsInfo.txt",ios::app);
+        if(file.is_open())
+        {
+           for(auto ref: accounts)
+           {
+             file<<ref.AccountNumber<<endl;
+             file<<ref.PIN<<endl;
+             file<<ref.AccountHolderName<<endl;
+             file<<ref.AccountType<<endl;
+             file<<ref.Balance<<endl;
+             file<<ref.Age<<endl;
+             file<<ref.PhNo<<endl;
+             file<<endl;
+           }
+        }
+
+        else
+        {
+            cout<<"ERROR WHILE OPENING FILE"<<endl;
+        }
         break;
     }
 
