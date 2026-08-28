@@ -16,7 +16,7 @@ string CreatePIN()
 
     else
     {
-        cout<<"INVALI PIN"<<endl;
+        cout<<"INVALI PIN, TRY AGAIN"<<endl;
         return CreatePIN();
     }
 }
@@ -27,8 +27,8 @@ class account
     string AccountHolderName;
     string PIN;
     string AccountType;
-    int long long AccountNumber;
-    int long long PhNo;
+    string AccountNumber;
+    string PhNo;
     int Age;
    
     public :
@@ -36,22 +36,34 @@ class account
     {
 
       cout<<"ENTER THE ACCOUNT NUMBER "<<endl;
-      cin>>AccountNumber;
+      cin.ignore();
+      getline(cin,AccountNumber);
 
       cout<<"ENTER THE ACCOUNT HOLDER NAME "<<endl;
-      cin.ignore();
       getline(cin,AccountHolderName);
 
-      cout<<"ENTER THE ACCOUNT TYPR "<<endl;
+      cout<<"ENTER THE ACCOUNT TYPE "<<endl;
       getline(cin,AccountType);
 
       PIN=CreatePIN();
 
       cout<<"ENTER THE AGE OF "<<AccountHolderName<<endl;
       cin>>Age;
+      cin.ignore();
 
-      cout<<"ENTER THE VALID PHNO OF "<<AccountHolderName<<endl;
-      cin>>PhNo;
+      while(true)
+      {
+        cout<<"ENTER THE VALID PHNO OF "<<AccountHolderName<<endl;
+        getline(cin,PhNo);
+        if(PhNo.size()==10)
+        {
+            break;
+        }
+        else
+        {
+            cout<<"INVALID NUMBER, TRY AGAIN"<<endl;
+        }
+      }
 
     }
 
