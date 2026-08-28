@@ -179,7 +179,16 @@ int main()
 
     case 4:
     {
-        cout<<"Development under progress";
+        int choice;
+        cout<<"=================================UPDATE OPERATIONS====================================="<<endl;
+        cout<<"1--> UPDATE NAME"<<endl;
+        cout<<"2--> UPDATE AGE"<<endl;
+        cout<<"3--> UPDATE PHNO"<<endl;
+        cout<<"4--> UPDATE ACCOUNT NAME"<<endl;
+        cout<<"5--> UPDATE PIN"<<endl;
+        cout<<"0--> BACK"<<endl;
+        cout<<"ENTER YOUR CHOICE : ";
+        cin>>choice;
         break;
     }
 
