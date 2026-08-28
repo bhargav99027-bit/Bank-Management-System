@@ -69,11 +69,6 @@ class account
 
     }
 
-    void SaveData()
-    {
-
-    }
-
 };
 
 int main()
@@ -88,7 +83,7 @@ int main()
     cout<<"4--> UPDATE ACCOUNT"<<endl;
     cout<<"5--> DELETE ACCOUNT"<<endl;
     cout<<"6--> TRANSACTIONS"<<endl;
-    cout<<"7--> SAVE ACCOUNT"<<endl;
+    cout<<"7--> SAVE ACCOUNTS"<<endl;
     cout<<"0--> EXIT"<<endl; 
 
 
@@ -111,7 +106,24 @@ int main()
 
     case 2:
     {
-       cout<<"Development under progress";
+       cout<<"*****************************ACCOUNTS DATABASE*********************************"<<endl;
+       cout<<"-------------------------------------------------------------------------------"<<endl;
+       cout<<"ACC.NUMBER   PIN    ACC.HOLDER   ACC.TPYE   BALANCE   AGE   PHNO"<<endl;
+       cout<<"-------------------------------------------------------------------------------"<<endl;
+       string line;
+       fstream file;
+       file.open("AccountsInfo.txt");
+       if(file.is_open())
+       {
+          while(getline(file,line))
+          {
+            cout<<line<<endl;
+          }
+       }
+       else
+       {
+        cout<<"ERROR IN OPENING FILE"<<endl;
+       }
        break;
     }
 
@@ -148,21 +160,21 @@ int main()
         {
            for(auto ref: accounts)
            {
-             file<<ref.AccountNumber<<endl;
-             file<<ref.PIN<<endl;
-             file<<ref.AccountHolderName<<endl;
-             file<<ref.AccountType<<endl;
-             file<<ref.Balance<<endl;
-             file<<ref.Age<<endl;
-             file<<ref.PhNo<<endl;
+             file<<ref.AccountNumber<<"  ";
+             file<<ref.PIN<<"  ";
+             file<<ref.AccountHolderName<<"   ";
+             file<<ref.AccountType<<"    ";
+             file<<ref.Balance<<"      ";
+             file<<ref.Age<<"    ";
+             file<<ref.PhNo<<"    ";
              file<<endl;
            }
         }
-
         else
         {
             cout<<"ERROR WHILE OPENING FILE"<<endl;
         }
+        file.close();
         break;
     }
 
