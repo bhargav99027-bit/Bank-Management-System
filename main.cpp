@@ -3,6 +3,50 @@
 #include<fstream>
 using namespace std;
 
+void DeleteAccount()
+{
+     
+     string AccNumber;
+     bool Found=false;
+     ofstream TempFile;
+     ifstream AccountsInfoFile;
+     TempFile.open("temp.txt");
+     AccountsInfoFile.open("AccountsInfo.txt");
+     if(TempFile.is_open() && AccountsInfoFile.is_open())
+     {
+       cout<<"ENTER THE ACCOUNT NUMBER TO DELETE : ";
+       cin.ignore();
+       getline(cin,AccNumber);
+       string line;
+       while (getline(AccountsInfoFile,line))
+       {
+         if( (line.find(AccNumber)<line.length()) && !line.empty())
+         {
+             cout<<"DELETED THE ACCOUNT WITH ACCOUNT NUMBER OF :"<<AccNumber<<endl;
+             Found=true;
+         }
+         else
+         {
+            TempFile<<line<<endl;
+         }
+
+       }
+       TempFile.close();
+       AccountsInfoFile.close();
+       remove("AccountsInfo.txt");
+       rename("temp.txt","AccountsInfo.txt");
+       if(!Found)
+       {
+        cout<<"ACCOUNT NUMBER NOT FOUND IN DATA BASE"<<endl;
+       }
+       
+     }
+     else
+     {
+        cout<<"ERROR IN OPENING FILES"<<endl;
+     }
+}
+
 string CreatePIN()
 {
     string PIN;
@@ -141,7 +185,7 @@ int main()
 
     case 5:
     {
-        cout<<"Development under progress";
+        DeleteAccount();
         break;
     }
     
