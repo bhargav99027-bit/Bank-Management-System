@@ -187,10 +187,132 @@ int main()
         cout<<"4--> UPDATE ACCOUNT NAME"<<endl;
         cout<<"5--> UPDATE PIN"<<endl;
         cout<<"0--> BACK"<<endl;
-        cout<<"ENTER YOUR CHOICE : ";
+        int True=1;
+        while(True)
+        {
+        cout<<"ENTER YOUR CHOICE FOR UPDATE OPERATIONS : ";
         cin>>choice;
-        break;
+        cin.ignore();
+        switch(choice)
+        {
+            case 1:
+            {
+               string AccountHolderName;
+               string PIN;
+               string AccountType;
+               string AccountNumber;
+               string PhNo;
+               string Balance;
+               int Age;
+               string EnteredAccNumber;
+               string EnteredPIN;
+               string NewName;
+               bool Found=false;
+               ofstream TempFile;
+               ifstream AccountsInfoFile;
+               TempFile.open("temp.txt");
+               AccountsInfoFile.open("AccountsInfo.txt");
+               if(TempFile.is_open() && AccountsInfoFile.is_open())
+               {
+                cout<<"ENTER THE ACCOUNT NUMBER TO UPDATE ACCOUNT HOLDER NAME : ";
+                getline(cin,EnteredAccNumber);
+                while (AccountsInfoFile >> AccountNumber ,AccountsInfoFile >> PIN, AccountsInfoFile >> AccountHolderName, AccountsInfoFile >> AccountType, AccountsInfoFile >> Balance, AccountsInfoFile >> Age,AccountsInfoFile >> PhNo )
+                {
+                  if(EnteredAccNumber==AccountNumber)
+                   {
+                      Found=true;
+                      cout<<"ENTER THE 5-DIGIT PIN : "<<endl;
+                      getline(cin,EnteredPIN);
+                      while(EnteredPIN!=PIN)
+                      {
+                         cout<<"WRONG PIN, TRY AGAIN"<<endl;
+                         cout<<"ENTER THE 5-DIGIT PIN : "<<endl;
+                         getline(cin,EnteredPIN);
+                      }
+
+                      cout<<"ENTER THE NEW NAME TO UPDATE"<<endl;
+                      getline(cin,NewName);
+                      while(NewName==AccountHolderName)
+                      {
+                          cout<<"NEW NAME IS SAME AS OLD NAME "<<endl;
+                          cout<<"ENTER THE NEW NAME TO UPDATE"<<endl;
+                          getline(cin,NewName);
+
+                      }
+
+                      TempFile<<AccountNumber<<"  ";
+                      TempFile<<PIN<<"  ";
+                      TempFile<<NewName<<"   ";
+                      TempFile<<AccountType<<"    ";
+                      TempFile<<Balance<<"      ";
+                      TempFile<<Age<<"    ";
+                      TempFile<<PhNo<<"    ";
+                      TempFile<<endl;
+                      cout<<"UPDATED NEW NAME SUCCESSFULLY!"<<endl;
+                      
+                   }
+                 else
+                   {
+                      TempFile<<AccountNumber<<"  ";
+                      TempFile<<PIN<<"  ";
+                      TempFile<<AccountHolderName<<"   ";
+                      TempFile<<AccountType<<"    ";
+                      TempFile<<Balance<<"      ";
+                      TempFile<<Age<<"    ";
+                      TempFile<<PhNo<<"    ";
+                      TempFile<<endl;
+                   }
+
+                }
+
+                TempFile.close();
+                AccountsInfoFile.close();
+                remove("AccountsInfo.txt");
+                rename("temp.txt","AccountsInfo.txt");
+                if(!Found)
+                {
+                  cout<<"ACCOUNT NUMBER NOT FOUND IN DATA BASE"<<endl;
+                }
+       
+               }
+               else
+               {
+                  cout<<"ERROR IN OPENING FILES"<<endl;
+               }
+               break;
+            }
+
+            case 2:
+            {
+                cout<<"Development under progress";
+            }
+
+            case 3:
+            {
+                cout<<"Development under progress";
+            }
+
+            case 4:
+            {
+                cout<<"Development under progress";
+            }
+
+            case 5:
+            {
+                cout<<"Development under progress";
+            }
+
+            case 0:
+            {
+                cout<<"EXITED FROM UPDATE OPERATIONS"<<endl;
+                True=0;
+                break;
+            }
+        }
+
     }
+    break;
+}
 
     case 5:
     {
@@ -245,4 +367,5 @@ int main()
   }
 
  }
+
 }
