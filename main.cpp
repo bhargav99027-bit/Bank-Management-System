@@ -23,18 +23,33 @@ string CreatePIN()
 
 void DisplayAccounts()
 {
-     cout<<"*****************************ACCOUNTS DATABASE*********************************"<<endl;
+       string AccountHolderName;
+       string PIN;
+       string AccountType;
+       string AccountNumber;
+       string PhNo;
+       string Balance;
+       int Age;
+
+       cout<<"*****************************ACCOUNTS DATABASE*********************************"<<endl;
        cout<<"-------------------------------------------------------------------------------"<<endl;
        cout<<"ACC.NUMBER   PIN    ACC.HOLDER   ACC.TPYE   BALANCE   AGE   PHNO"<<endl;
        cout<<"-------------------------------------------------------------------------------"<<endl;
-       string line;
+
        fstream file;
        file.open("AccountsInfo.txt");
        if(file.is_open())
        {
-          while(getline(file,line))
+          while(file >> AccountNumber  >> PIN >> AccountHolderName >> AccountType >> Balance >> Age >> PhNo)
           {
-            cout<<line<<endl;
+            cout<<AccountNumber<<"  ";
+            cout<<"*****"<<"  ";
+            cout<<AccountHolderName<<"   ";
+            cout<<AccountType<<"    ";
+            cout<<Balance<<"      ";
+            cout<<Age<<"    ";
+            cout<<PhNo<<"    ";
+            cout<<endl;
           }
        }
        else
