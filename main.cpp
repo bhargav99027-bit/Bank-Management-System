@@ -21,6 +21,28 @@ string CreatePIN()
     }
 }
 
+void DisplayAccounts()
+{
+     cout<<"*****************************ACCOUNTS DATABASE*********************************"<<endl;
+       cout<<"-------------------------------------------------------------------------------"<<endl;
+       cout<<"ACC.NUMBER   PIN    ACC.HOLDER   ACC.TPYE   BALANCE   AGE   PHNO"<<endl;
+       cout<<"-------------------------------------------------------------------------------"<<endl;
+       string line;
+       fstream file;
+       file.open("AccountsInfo.txt");
+       if(file.is_open())
+       {
+          while(getline(file,line))
+          {
+            cout<<line<<endl;
+          }
+       }
+       else
+       {
+        cout<<"ERROR IN OPENING FILE"<<endl;
+       }
+}
+
 void UpdateAccount()
 {
         int choice;
@@ -494,6 +516,12 @@ void UpdateAccount()
                 True=0;
                 break;
             }
+
+            default:
+            {
+                cout<<"INVALID STATE, PLEASE TRY WHICH ARE IN MENU"<<endl;
+                break;
+            }
         }
 
     }
@@ -628,24 +656,7 @@ int main()
 
     case 2:
     {
-       cout<<"*****************************ACCOUNTS DATABASE*********************************"<<endl;
-       cout<<"-------------------------------------------------------------------------------"<<endl;
-       cout<<"ACC.NUMBER   PIN    ACC.HOLDER   ACC.TPYE   BALANCE   AGE   PHNO"<<endl;
-       cout<<"-------------------------------------------------------------------------------"<<endl;
-       string line;
-       fstream file;
-       file.open("AccountsInfo.txt");
-       if(file.is_open())
-       {
-          while(getline(file,line))
-          {
-            cout<<line<<endl;
-          }
-       }
-       else
-       {
-        cout<<"ERROR IN OPENING FILE"<<endl;
-       }
+       DisplayAccounts();
        break;
     }
 
