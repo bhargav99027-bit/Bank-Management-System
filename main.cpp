@@ -10,7 +10,7 @@ void UpdateAccount()
         cout<<"1--> UPDATE NAME"<<endl;
         cout<<"2--> UPDATE AGE"<<endl;
         cout<<"3--> UPDATE PHNO"<<endl;
-        cout<<"4--> UPDATE ACCOUNT NAME"<<endl;
+        cout<<"4--> UPDATE ACCOUNT TYPE"<<endl;
         cout<<"5--> UPDATE PIN"<<endl;
         cout<<"0--> BACK"<<endl;
         int True=1;
@@ -215,7 +215,6 @@ void UpdateAccount()
                if(TempFile.is_open() && AccountsInfoFile.is_open())
                {
                 cout<<"ENTER THE ACCOUNT NUMBER TO UPDATE ACCOUNT HOLDER PHNO : ";
-                //cin.ignore();
                 getline(cin,EnteredAccNumber);
                 while (AccountsInfoFile >> AccountNumber  >> PIN >> AccountHolderName >> AccountType >> Balance >> Age >> PhNo )
                 {
@@ -298,7 +297,90 @@ void UpdateAccount()
 
             case 4:
             {
-                cout<<"Development under progress";
+               string AccountHolderName;
+               string PIN;
+               string AccountType;
+               string AccountNumber;
+               string PhNo;
+               string Balance;
+               int Age;
+               string EnteredAccNumber;
+               string EnteredPIN;
+               string NewAccountType;
+               bool Found=false;
+               ofstream TempFile;
+               ifstream AccountsInfoFile;
+               TempFile.open("temp.txt",ios::app);
+               AccountsInfoFile.open("AccountsInfo.txt");
+               if(TempFile.is_open() && AccountsInfoFile.is_open())
+               {
+                cout<<"ENTER THE ACCOUNT NUMBER TO UPDATE ACCOUNT TYPE : ";
+                getline(cin,EnteredAccNumber);
+                while (AccountsInfoFile >> AccountNumber  >> PIN >> AccountHolderName >> AccountType >> Balance >> Age >> PhNo )
+                {
+                  if(EnteredAccNumber==AccountNumber)
+                   {
+                      Found=true;
+                      cout<<"ENTER THE 5-DIGIT PIN : "<<endl;
+                      getline(cin,EnteredPIN);
+                      while(EnteredPIN!=PIN)
+                      {
+                         cout<<"WRONG PIN, TRY AGAIN"<<endl;
+                         cout<<"ENTER THE 5-DIGIT PIN : "<<endl;
+                         getline(cin,EnteredPIN);
+                      }
+
+                      cout<<"ENTER THE NEW ACCOUNT TYPE TO UPDATE"<<endl;
+                      getline(cin,NewAccountType);
+
+
+                      while(NewAccountType==AccountType)
+                      {
+                          cout<<"NEW ACCOUNT TYPE IS SAME AS OLD ACCOUNT TYPE "<<endl;
+                          cout<<"ENTER THE NEW ACCOUNT TYPE TO UPDATE"<<endl;
+                          getline(cin,NewAccountType);
+
+                      }
+
+                      TempFile<<AccountNumber<<"  ";
+                      TempFile<<PIN<<"  ";
+                      TempFile<<AccountHolderName<<"   ";
+                      TempFile<<NewAccountType<<"    ";
+                      TempFile<<Balance<<"      ";
+                      TempFile<<Age<<"    ";
+                      TempFile<<PhNo<<"    ";
+                      TempFile<<endl;
+                      cout<<"UPDATED NEW ACCOUNT TYPE SUCCESSFULLY!"<<endl;
+                      
+                   }
+                 else
+                   {
+                      TempFile<<AccountNumber<<"  ";
+                      TempFile<<PIN<<"  ";
+                      TempFile<<AccountHolderName<<"   ";
+                      TempFile<<AccountType<<"    ";
+                      TempFile<<Balance<<"      ";
+                      TempFile<<Age<<"    ";
+                      TempFile<<PhNo<<"    ";
+                      TempFile<<endl;
+                   }
+
+                }
+
+                TempFile.close();
+                AccountsInfoFile.close();
+                remove("AccountsInfo.txt");
+                rename("temp.txt","AccountsInfo.txt");
+                if(!Found)
+                {
+                  cout<<"ACCOUNT NUMBER NOT FOUND IN DATA BASE"<<endl;
+                }
+       
+               }
+               else
+               {
+                  cout<<"ERROR IN OPENING FILES"<<endl;
+               }
                 break;
             }
 
