@@ -22,6 +22,56 @@ string CreatePIN()
     }
 }
 
+void SearchAccount()
+{
+       string AccountHolderName;
+       string PIN;
+       string AccountType;
+       string AccountNumber;
+       string PhNo;
+       string Balance;
+       string EnteredAccountNumber;
+       bool Found=false;
+       int Age;
+       fstream file;
+
+       file.open("AccountsInfo.txt");
+       cout<<"ENTER THE ACCOUNT NUMBER TO UPDATE ACCOUNT HOLDER NAME : ";
+       cin.ignore(numeric_limits<streamsize>::max(), '\n');
+       getline(cin,EnteredAccountNumber);
+       if(file.is_open())
+       {
+          while(file >> AccountNumber  >> PIN >> AccountHolderName >> AccountType >> Balance >> Age >> PhNo)
+          {
+                if(EnteredAccountNumber==AccountNumber)
+                {
+                     Found=true;
+                     cout<<"*********************************ACCOUNT INFO*********************************"<<endl;
+                     cout<<"-------------------------------------------------------------------------------"<<endl;
+                     cout<<"ACC.NUMBER   PIN    ACC.HOLDER   ACC.TPYE   BALANCE   AGE   PHNO"<<endl;
+                     cout<<"-------------------------------------------------------------------------------"<<endl;
+                     cout<<AccountNumber<<"  ";
+                     cout<<"*****"<<"  ";
+                     cout<<AccountHolderName<<"   ";
+                     cout<<AccountType<<"    ";
+                     cout<<Balance<<"      ";
+                     cout<<Age<<"    ";
+                     cout<<PhNo<<"    ";
+                     cout<<endl;
+                }
+          }
+       }
+       else
+       {
+        cout<<"ERROR IN OPENING FILE"<<endl;
+       }
+       if(!Found)
+       {
+         cout<<"ACCOUNT NUMBER NOT FOUND IN DATA BASE"<<endl;
+       }
+       file.close();
+}
+
 void DisplayAccounts()
 {
        string AccountHolderName;
@@ -57,6 +107,7 @@ void DisplayAccounts()
        {
         cout<<"ERROR IN OPENING FILE"<<endl;
        }
+       file.close();
 }
 
 void UpdateAccount()
@@ -661,7 +712,7 @@ int main()
     cout<<"--------------------------------------------------------------------------------------------"<<endl;
     cout<<"1--> CREATE ACCOUNT"<<endl;
     cout<<"2--> DISPLAY ACCOUNTS"<<endl;
-    cout<<"3--> SEARCHING ACCOUNT"<<endl;
+    cout<<"3--> SEARCH ACCOUNT"<<endl;
     cout<<"4--> UPDATE ACCOUNT"<<endl;
     cout<<"5--> DELETE ACCOUNT"<<endl;
     cout<<"6--> TRANSACTIONS"<<endl;
@@ -674,6 +725,7 @@ int main()
     int  choice;
     cout<<"---------------------------------------------------------------------------------------------"<<endl;
     cout<<"ENTER YOUR CHOICE: ";
+    //To Avoid Non Int Value
     if (!(cin >> choice))
     {  
         cin.clear();
@@ -702,7 +754,7 @@ int main()
 
     case 3:
     {
-        cout<<"Development under progress";
+        SearchAccount();
         break;
     }
 
