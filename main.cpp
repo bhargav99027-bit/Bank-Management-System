@@ -139,7 +139,7 @@ void Transactions()
                                  cout<<"ENTER THE AMOUNT TO DEPOSIT :"<<endl;
                                  cin>>Deposit;
                                  
-                                 long long NewBalance=Deposit+stoll(Balance);
+                                 long long NewBalance=stoll(Balance)+Deposit;
 
                                  TempFile<<AccountNumber<<"  ";
                                  TempFile<<PIN<<"  ";
@@ -183,8 +183,99 @@ void Transactions()
 
             case 3:
             {
-               cout<<"DEVELOPMENT UNDER PROGRESS"<<endl;
-               break;
+                 string AccountHolderName;
+                 string PIN;
+                 string AccountType;
+                 string AccountNumber;
+                 string PhNo;
+                 string Balance;
+                 int Age;
+                 string EnteredAccNumber;
+                 string EnteredPIN;
+                 long long Withdraw;
+                 bool Found=false;
+                 ofstream TempFile;
+                 ifstream AccountsInfoFile;
+
+                 TempFile.open("temp.txt");
+                 AccountsInfoFile.open("AccountsInfo.txt");
+                 if(TempFile.is_open() && AccountsInfoFile.is_open())
+                 {
+                     cout<<"ENTER THE ACCOUNT NUMBER TO WITHDRAW : ";
+                     cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+                     getline(cin,EnteredAccNumber);
+                     while (AccountsInfoFile >> AccountNumber  >> PIN >> AccountHolderName >> AccountType >> Balance >> Age >> PhNo)
+                     {
+                           if(EnteredAccNumber==AccountNumber)
+                             {
+                                 Found=true;
+                                 cout<<"ENTER THE PIN :"<<endl;
+                                 getline(cin,EnteredPIN);
+                                 while(EnteredPIN!=PIN)
+                                 {
+                                     cout<<"INVALID PIN, ENTER THE CORRECT PIN : "<<endl;
+                                 }
+
+                                 cout<<"ENTER THE AMOUNT TO WITHDRAW :"<<endl;
+                                 cin>>Withdraw;
+
+                                 if(Withdraw<=stoll(Balance))
+                                 {
+                                    long long NewBalance=stoll(Balance)-Withdraw;
+
+                                    TempFile<<AccountNumber<<"  ";
+                                    TempFile<<PIN<<"  ";
+                                    TempFile<<AccountHolderName<<"   ";
+                                    TempFile<<AccountType<<"    ";
+                                    TempFile<<NewBalance<<"      ";
+                                    TempFile<<Age<<"    ";
+                                    TempFile<<PhNo<<"    ";
+                                    TempFile<<endl;
+                                    cout<<"AMOUNT WITHDRAW SUCCESSFULLY!"<<endl;
+                                 }
+
+                                 else
+                                 {
+                                    TempFile<<AccountNumber<<"  ";
+                                    TempFile<<PIN<<"  ";
+                                    TempFile<<AccountHolderName<<"   ";
+                                    TempFile<<AccountType<<"    ";
+                                    TempFile<<Balance<<"      ";
+                                    TempFile<<Age<<"    ";
+                                    TempFile<<PhNo<<"    ";
+                                    TempFile<<endl;
+                                    cout<<"ACCOUNT BALANCE IS INSUFFICIENT CHECK BALANCE AND TRY AGAIN"<<endl;
+                                 }
+                             }
+                             else
+                             {
+                                 TempFile<<AccountNumber<<"  ";
+                                 TempFile<<PIN<<"  ";
+                                 TempFile<<AccountHolderName<<"   ";
+                                 TempFile<<AccountType<<"    ";
+                                 TempFile<<Balance<<"      ";
+                                 TempFile<<Age<<"    ";
+                                 TempFile<<PhNo<<"    ";
+                                 TempFile<<endl;;
+                             }
+
+                     }
+                     TempFile.close();
+                     AccountsInfoFile.close();
+                     remove("AccountsInfo.txt");
+                     rename("temp.txt","AccountsInfo.txt");
+                     if(!Found)
+                     {
+                         cout<<"ACCOUNT NUMBER NOT FOUND IN DATA BASE"<<endl;
+                     }
+       
+                  }
+                  else
+                  {
+                      cout<<"ERROR IN OPENING FILES"<<endl;
+                  }
+                 break;
             }
 
             case 4:
