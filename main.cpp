@@ -1,6 +1,7 @@
 #include<iostream>
 #include<vector>
 #include<fstream>
+#include<limits>
 using namespace std;
 
 string CreatePIN()
@@ -73,7 +74,8 @@ void UpdateAccount()
         {
         cout<<"ENTER YOUR CHOICE FOR UPDATE OPERATIONS : ";
         cin>>choice;
-        cin.ignore();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
         switch(choice)
         {
             case 1:
@@ -91,7 +93,7 @@ void UpdateAccount()
                bool Found=false;
                ofstream TempFile;
                ifstream AccountsInfoFile;
-               TempFile.open("temp.txt",ios::app);
+               TempFile.open("temp.txt");
                AccountsInfoFile.open("AccountsInfo.txt");
                if(TempFile.is_open() && AccountsInfoFile.is_open())
                {
@@ -544,29 +546,43 @@ void UpdateAccount()
 
 void DeleteAccount()
 {
-     
-     string AccNumber;
+     string AccountHolderName;
+     string PIN;
+     string AccountType;
+     string AccountNumber;
+     string PhNo;
+     string Balance;
+     int Age;
+     string EnteredAccNumber;
      bool Found=false;
      ofstream TempFile;
      ifstream AccountsInfoFile;
+
      TempFile.open("temp.txt");
      AccountsInfoFile.open("AccountsInfo.txt");
      if(TempFile.is_open() && AccountsInfoFile.is_open())
      {
        cout<<"ENTER THE ACCOUNT NUMBER TO DELETE : ";
-       cin.ignore();
-       getline(cin,AccNumber);
-       string line;
-       while (getline(AccountsInfoFile,line))
+       cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+       getline(cin,EnteredAccNumber);
+       while (AccountsInfoFile >> AccountNumber  >> PIN >> AccountHolderName >> AccountType >> Balance >> Age >> PhNo)
        {
-         if( (line.find(AccNumber)<line.length()) && !line.empty())
+         if(EnteredAccNumber==AccountNumber)
          {
-             cout<<"DELETED THE ACCOUNT WITH ACCOUNT NUMBER OF :"<<AccNumber<<endl;
+             cout<<"DELETED THE ACCOUNT WITH ACCOUNT NUMBER OF :"<<EnteredAccNumber<<endl;
              Found=true;
          }
          else
          {
-            TempFile<<line<<endl;
+            TempFile<<AccountNumber<<"  ";
+            TempFile<<PIN<<"  ";
+            TempFile<<AccountHolderName<<"   ";
+            TempFile<<AccountType<<"    ";
+            TempFile<<Balance<<"      ";
+            TempFile<<Age<<"    ";
+            TempFile<<PhNo<<"    ";
+            TempFile<<endl;;
          }
 
        }
@@ -602,7 +618,8 @@ class account
     {
 
       cout<<"ENTER THE ACCOUNT NUMBER "<<endl;
-      cin.ignore();
+      cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
       getline(cin,AccountNumber);
 
       cout<<"ENTER THE ACCOUNT HOLDER NAME "<<endl;
@@ -616,7 +633,7 @@ class account
 
       cout<<"ENTER THE AGE OF "<<AccountHolderName<<endl;
       cin>>Age;
-      cin.ignore();
+      cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
       while(true)
       {
@@ -657,7 +674,15 @@ int main()
     int  choice;
     cout<<"---------------------------------------------------------------------------------------------"<<endl;
     cout<<"ENTER YOUR CHOICE: ";
-    cin>>choice;
+    if (!(cin >> choice))
+    {  
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        cout << "INVALID INPUT. PLEASE ENTER A NUMBER." << endl;
+        continue;
+    }
+
     switch (choice)
     {
 
