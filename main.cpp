@@ -23,6 +23,105 @@ string CreatePIN()
     }
 }
 
+void Transactions()
+{
+        int choice;
+        cout<<"=================================TRANSACTIONS====================================="<<endl;
+        cout<<"1--> CHECK BALANCE"<<endl;
+        cout<<"2--> DEPOSIT"<<endl;
+        cout<<"3--> WITHDRAW"<<endl;
+        cout<<"4--> TRANSFER"<<endl;
+        cout<<"0--> BACK"<<endl;
+        int True=1;
+        while(True)
+        {
+           cout<<"---------------------------------------------------------------------------------------------"<<endl;
+           cout<<"ENTER YOUR CHOICE FOR TRANSACTION : "<<endl;
+           cin>>choice;
+           switch (choice)
+           {
+
+            case 1:
+            {
+                string AccountHolderName;
+                string PIN;
+                string AccountType;
+                string AccountNumber;
+                string PhNo;
+                string Balance;
+                string EnteredAccountNumber;
+                string EnteredPIN;
+                bool Found=false;
+                int Age;
+                fstream file;
+
+               file.open("AccountsInfo.txt");
+               cout<<"ENTER THE ACCOUNT NUMBER TO CHECK BALANCE: ";
+               cin.ignore(numeric_limits<streamsize>::max(), '\n');
+               getline(cin,EnteredAccountNumber);
+               if(file.is_open())
+               {
+                  while(file >> AccountNumber  >> PIN >> AccountHolderName >> AccountType >> Balance >> Age >> PhNo)
+                  {
+                     if(EnteredAccountNumber==AccountNumber)
+                       {
+                          Found=True;
+                          cout<<"ENTER THE PIN :"<<endl;
+                          getline(cin,EnteredPIN);
+                          while(EnteredPIN!=PIN)
+                          {
+                           cout<<"INVALID PIN, ENTER THE CORRECT PIN : "<<endl;
+                          }
+                          cout<<"ACCOUNT BALANCE = "<<Balance<<endl;
+                       }
+                  }
+               }
+               else
+               {
+                   cout<<"ERROR IN OPENING FILE"<<endl;
+               }
+               if(!Found)
+               {
+                   cout<<"ACCOUNT NUMBER NOT FOUND IN DATA BASE"<<endl;
+               }
+               file.close();
+               break;
+            }
+
+            case 2:
+            {
+               cout<<"DEVELOPMENT UNDER PROGRESS"<<endl;
+               break;
+            }
+
+            case 3:
+            {
+               cout<<"DEVELOPMENT UNDER PROGRESS"<<endl;
+               break;
+            }
+
+            case 4:
+            {
+               cout<<"DEVELOPMENT UNDER PROGRESS"<<endl;
+               break;
+            }
+
+            case 0:
+            {
+               cout<<"EXITED FROM TRANSACTION"<<endl;
+               True=0;
+               break;
+            }
+
+            default :
+            {
+               cout<<"ENTER THE VALID CHOICE"<<endl;
+               break;
+            }
+           }
+        }
+}
+
 void SearchAccount()
 {
        string AccountHolderName;
@@ -37,7 +136,7 @@ void SearchAccount()
        fstream file;
 
        file.open("AccountsInfo.txt");
-       cout<<"ENTER THE ACCOUNT NUMBER TO UPDATE ACCOUNT HOLDER NAME : ";
+       cout<<"ENTER THE ACCOUNT NUMBER TO SEARCH ACCOUNT : ";
        cin.ignore(numeric_limits<streamsize>::max(), '\n');
        getline(cin,EnteredAccountNumber);
        if(file.is_open())
@@ -124,6 +223,7 @@ void UpdateAccount()
         int True=1;
         while(True)
         {
+        cout<<"---------------------------------------------------------------------------------------------"<<endl; 
         cout<<"ENTER YOUR CHOICE FOR UPDATE OPERATIONS : ";
         cin>>choice;
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -773,7 +873,7 @@ int main()
     
     case 6:
     {
-        cout<<"Development under progress";  
+        Transactions();  
         break;
     }
 
