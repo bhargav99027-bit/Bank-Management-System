@@ -2,6 +2,7 @@
 #include<vector>
 #include<fstream>
 #include<limits>
+#include<set>
 using namespace std;
 
 string CreatePIN()
@@ -46,7 +47,7 @@ void SearchAccount()
                 if(EnteredAccountNumber==AccountNumber)
                 {
                      Found=true;
-                     cout<<"*********************************ACCOUNT INFO*********************************"<<endl;
+                     cout<<"*********************************ACCOUNT INFO**********************************"<<endl;
                      cout<<"-------------------------------------------------------------------------------"<<endl;
                      cout<<"ACC.NUMBER   PIN    ACC.HOLDER   ACC.TPYE   BALANCE   AGE   PHNO"<<endl;
                      cout<<"-------------------------------------------------------------------------------"<<endl;
@@ -777,22 +778,53 @@ int main()
     }
 
     case 7:
-    { 
-        cout<<"Development under progress"<<endl;
+    {
+        string AccountHolderName;
+        string PIN;
+        string AccountType;
+        string AccountNumber;
+        string PhNo;
+        string Balance;;
         fstream file;
+        int Age; 
+        set <string> AccountNumbers;
+        file.open("AccountsInfo.txt",ios::in);
+        //Using set TO Insert only Nee Acconts To Data Base
+        if(file.is_open())
+        {
+           while(file >> AccountNumber  >> PIN >> AccountHolderName >> AccountType >> Balance >> Age >> PhNo)
+           {
+              AccountNumbers.insert(AccountNumber);
+           }
+        }
+        else
+        {
+         cout<<"ERROR WHILE OPENING FILE"<<endl;
+        }
+        file.close();
+
         file.open("AccountsInfo.txt",ios::app);
         if(file.is_open())
         {
            for(auto ref: accounts)
            {
-             file<<ref.AccountNumber<<"  ";
-             file<<ref.PIN<<"  ";
-             file<<ref.AccountHolderName<<"   ";
-             file<<ref.AccountType<<"    ";
-             file<<ref.Balance<<"      ";
-             file<<ref.Age<<"    ";
-             file<<ref.PhNo<<"    ";
-             file<<endl;
+              if(AccountNumbers.find(ref.AccountNumber)==AccountNumbers.end())
+              {
+                  file<<ref.AccountNumber<<"  ";
+                  file<<ref.PIN<<"  ";
+                  file<<ref.AccountHolderName<<"   ";
+                  file<<ref.AccountType<<"    ";
+                  file<<ref.Balance<<"      ";
+                  file<<ref.Age<<"    ";
+                  file<<ref.PhNo<<"    ";
+                  file<<endl;
+                  cout << "THE ACCOUNT WITH ACCOUNT NUMBER " << ref.AccountNumber<< "ADDED SUCCESSFULLY!" << endl;
+              }
+              else
+              {
+               cout << "THE ACCOUNT WITH ACCOUNT NUMBER " << ref.AccountNumber<< " ALREADY EXISTS IN THE DATABASE" << endl;
+
+              }
            }
         }
         else
