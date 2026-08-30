@@ -5,6 +5,18 @@
 #include<set>
 using namespace std;
 
+string FormateIndia(string money)
+{
+   int pos=money.length()-3;
+
+   while(pos>0)
+   {
+      money.insert(pos,",");
+      pos-=2;
+   }
+   return money;
+}
+
 string CreatePIN()
 {
     string PIN;
@@ -72,7 +84,7 @@ void Transactions()
                           {
                            cout<<"INVALID PIN, ENTER THE CORRECT PIN : "<<endl;
                           }
-                          cout<<"ACCOUNT BALANCE = "<<Balance<<endl;
+                          cout<<"ACCOUNT BALANCE = "<<FormateIndia(Balance)<<endl;
                        }
                   }
                }
@@ -90,8 +102,83 @@ void Transactions()
 
             case 2:
             {
-               cout<<"DEVELOPMENT UNDER PROGRESS"<<endl;
-               break;
+                 string AccountHolderName;
+                 string PIN;
+                 string AccountType;
+                 string AccountNumber;
+                 string PhNo;
+                 string Balance;
+                 int Age;
+                 string EnteredAccNumber;
+                 string EnteredPIN;
+                 long long Deposit;
+                 bool Found=false;
+                 ofstream TempFile;
+                 ifstream AccountsInfoFile;
+
+                 TempFile.open("temp.txt");
+                 AccountsInfoFile.open("AccountsInfo.txt");
+                 if(TempFile.is_open() && AccountsInfoFile.is_open())
+                 {
+                     cout<<"ENTER THE ACCOUNT NUMBER TO DEPOSIT : ";
+                     cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+                     getline(cin,EnteredAccNumber);
+                     while (AccountsInfoFile >> AccountNumber  >> PIN >> AccountHolderName >> AccountType >> Balance >> Age >> PhNo)
+                     {
+                           if(EnteredAccNumber==AccountNumber)
+                             {
+                                 Found=true;
+                                 cout<<"ENTER THE PIN :"<<endl;
+                                 getline(cin,EnteredPIN);
+                                 while(EnteredPIN!=PIN)
+                                 {
+                                     cout<<"INVALID PIN, ENTER THE CORRECT PIN : "<<endl;
+                                 }
+
+                                 cout<<"ENTER THE AMOUNT TO DEPOSIT :"<<endl;
+                                 cin>>Deposit;
+                                 
+                                 long long NewBalance=Deposit+stoll(Balance);
+
+                                 TempFile<<AccountNumber<<"  ";
+                                 TempFile<<PIN<<"  ";
+                                 TempFile<<AccountHolderName<<"   ";
+                                 TempFile<<AccountType<<"    ";
+                                 TempFile<<NewBalance<<"      ";
+                                 TempFile<<Age<<"    ";
+                                 TempFile<<PhNo<<"    ";
+                                 TempFile<<endl;
+                                 cout<<"AMOUNT DEPOSITED SUCCESSFULLY!"<<endl;
+                             }
+                             else
+                             {
+                                 TempFile<<AccountNumber<<"  ";
+                                 TempFile<<PIN<<"  ";
+                                 TempFile<<AccountHolderName<<"   ";
+                                 TempFile<<AccountType<<"    ";
+                                 TempFile<<Balance<<"      ";
+                                 TempFile<<Age<<"    ";
+                                 TempFile<<PhNo<<"    ";
+                                 TempFile<<endl;;
+                              }
+
+                     }
+                     TempFile.close();
+                     AccountsInfoFile.close();
+                     remove("AccountsInfo.txt");
+                     rename("temp.txt","AccountsInfo.txt");
+                     if(!Found)
+                     {
+                         cout<<"ACCOUNT NUMBER NOT FOUND IN DATA BASE"<<endl;
+                     }
+       
+                  }
+                  else
+                  {
+                      cout<<"ERROR IN OPENING FILES"<<endl;
+                  }
+                  break;
             }
 
             case 3:
@@ -706,6 +793,7 @@ void DeleteAccount()
      string Balance;
      int Age;
      string EnteredAccNumber;
+     string EnteredPIN;
      bool Found=false;
      ofstream TempFile;
      ifstream AccountsInfoFile;
@@ -722,6 +810,12 @@ void DeleteAccount()
        {
          if(EnteredAccNumber==AccountNumber)
          {
+             cout<<"ENTER THE PIN :"<<endl;
+             getline(cin,EnteredPIN);
+             while(EnteredPIN!=PIN)
+             {
+                cout<<"INVALID PIN, ENTER THE CORRECT PIN : "<<endl;
+             }
              cout<<"DELETED THE ACCOUNT WITH ACCOUNT NUMBER OF :"<<EnteredAccNumber<<endl;
              Found=true;
          }
