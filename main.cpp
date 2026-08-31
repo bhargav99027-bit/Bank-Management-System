@@ -5,6 +5,33 @@
 #include<set>
 using namespace std;
 
+set <string> LoadSet()
+{
+   string AccountHolderName;
+   string PIN;
+   string AccountType;
+   string AccountNumber;
+   string PhNo;
+   string Balance;
+   fstream file;
+   int Age;
+   set <string> AccountNumbers;
+   file.open("AccountsInfo.txt",ios::in);
+   if(file.is_open())
+   {
+       while(file >> AccountNumber  >> PIN >> AccountHolderName >> AccountType >> Balance >> Age >> PhNo)
+       {
+            AccountNumbers.insert(AccountNumber);
+       }
+   }
+   else
+   {
+       cout<<"ERROR WHILE OPENING FILE"<<endl;
+   }
+   file.close();
+   return AccountNumbers;
+}
+
 string FormateIndia(string money)
 {
    int pos=money.length()-3;
@@ -42,7 +69,7 @@ void Transactions()
         cout<<"1--> CHECK BALANCE"<<endl;
         cout<<"2--> DEPOSIT"<<endl;
         cout<<"3--> WITHDRAW"<<endl;
-        cout<<"4--> TRANSFER"<<endl;
+        cout<<"4--> TRANSFER MONEY"<<endl;
         cout<<"0--> BACK"<<endl;
         int True=1;
         while(True)
@@ -215,6 +242,7 @@ void Transactions()
                                  while(EnteredPIN!=PIN)
                                  {
                                      cout<<"INVALID PIN, ENTER THE CORRECT PIN : "<<endl;
+                                     getline(cin,EnteredPIN);
                                  }
 
                                  cout<<"ENTER THE AMOUNT TO WITHDRAW :"<<endl;
@@ -280,9 +308,138 @@ void Transactions()
 
             case 4:
             {
-               cout<<"DEVELOPMENT UNDER PROGRESS"<<endl;
-               break;
-            }
+                   string SenderAccountNumber;
+                   string ResiverAccountNumber;
+                   set <string> AccountNumbers=LoadSet();
+                   cout<<"ENTER THE SENDER ACCOUNT NUMBER"<<endl;
+                   cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                   getline(cin,SenderAccountNumber);
+                   while(AccountNumbers.find(SenderAccountNumber)==AccountNumbers.end())
+                   {
+                       cout<<"SENDER ACCOUNT NOT FOUND, PROVIDE THE VALID ACCOUNT NUMBER"<<endl;
+                       getline(cin,SenderAccountNumber);
+                   }
+
+                   cout<<"ENTER THE RESIVER ACCOUNT NUMBER"<<endl;
+                   getline(cin,ResiverAccountNumber);
+
+                   while(AccountNumbers.find(ResiverAccountNumber)==AccountNumbers.end())
+                   {
+                      cout<<"RESIVER ACCOUNT NOT FOUND, PROVIDE THE VALID ACCOUNT NUMBER"<<endl;
+                      getline(cin,ResiverAccountNumber);
+                   }
+
+                  if(SenderAccountNumber==ResiverAccountNumber)
+                  {
+                     cout<<"ENTERED DIFFERENT ACCOUNT NUMBERS TO MAKE TRANSACTION"<<endl;
+                     return;
+                  }
+
+                  else
+                  {
+                     string AccountHolderName;
+                     string PIN;
+                     string AccountType;
+                     string AccountNumber;
+                     string PhNo;
+                     string Balance;
+                     string EnteredPIN;
+                     int Age;
+                     long long Amount;
+
+                     ofstream TempFile;
+                     ifstream AccountsInfoFile;
+
+                     TempFile.open("temp.txt");
+                     AccountsInfoFile.open("AccountsInfo.txt");
+                     cout<<"ENTER THE AMOUNT TO TRANSFER :"<<endl;
+                     cin>>Amount;
+                     while(AccountsInfoFile >> AccountNumber  >> PIN >> AccountHolderName >> AccountType >> Balance >> Age >> PhNo)
+                     {
+                     if(SenderAccountNumber==AccountNumber)
+                     {
+                         cout<<"ENTER THE SENDER ACCOUNT PIN :"<<endl;
+                         cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                         getline(cin,EnteredPIN);
+                         while(EnteredPIN!=PIN)
+                         {
+                            cout<<"INVALID PIN, ENTER THE CORRECT PIN : "<<endl;
+                            getline(cin,EnteredPIN);
+                         }
+
+                         if(Amount<=stoll(Balance))
+                         {
+                            TempFile<<AccountNumber<<"  ";
+                            TempFile<<PIN<<"  ";
+                            TempFile<<AccountHolderName<<"   ";
+                            TempFile<<AccountType<<"    ";
+                            TempFile<<stoll(Balance)-Amount<<"      ";
+                            TempFile<<Age<<"    ";
+                            TempFile<<PhNo<<"    ";
+                            TempFile<<endl;
+                         }
+                         else
+                         {
+                             cout<<"ENTERED AMOUNT IS GREATER THAN BALANCE : "<<endl;
+                             return;
+                         }
+                     }
+                     else
+                     {
+                         TempFile<<AccountNumber<<"  ";
+                         TempFile<<PIN<<"  ";
+                         TempFile<<AccountHolderName<<"   ";
+                         TempFile<<AccountType<<"    ";
+                         TempFile<<Balance<<"      ";
+                         TempFile<<Age<<"    ";
+                         TempFile<<PhNo<<"    ";
+                         TempFile<<endl;
+                     }
+
+                     }
+                               
+                     TempFile.close();
+                     AccountsInfoFile.close();
+                     remove("AccountsInfo.txt");
+                     rename("temp.txt","AccountsInfo.txt");
+
+                     TempFile.open("temp.txt");
+                     AccountsInfoFile.open("AccountsInfo.txt");
+
+                     while(AccountsInfoFile >> AccountNumber  >> PIN >> AccountHolderName >> AccountType >> Balance >> Age >> PhNo)
+                     {
+                         if(ResiverAccountNumber==AccountNumber)
+                         {
+                             TempFile<<AccountNumber<<"  ";
+                             TempFile<<PIN<<"  ";
+                             TempFile<<AccountHolderName<<"   ";
+                             TempFile<<AccountType<<"    ";
+                             TempFile<<stoll(Balance)+Amount<<"      ";
+                             TempFile<<Age<<"    ";
+                             TempFile<<PhNo<<"    ";
+                             TempFile<<endl;
+                             cout<<"AMOUNT TRANSFERED SUCCESSFULLY!"<<endl;
+                         }
+                         else
+                         {
+                             TempFile<<AccountNumber<<"  ";
+                             TempFile<<PIN<<"  ";
+                             TempFile<<AccountHolderName<<"   ";
+                             TempFile<<AccountType<<"    ";
+                             TempFile<<Balance<<"      ";
+                             TempFile<<Age<<"    ";
+                             TempFile<<PhNo<<"    ";
+                             TempFile<<endl;
+                         }
+                      }
+
+                      TempFile.close();
+                      AccountsInfoFile.close();
+                      remove("AccountsInfo.txt");
+                      rename("temp.txt","AccountsInfo.txt");
+                  }
+                  break;
+            } 
 
             case 0:
             {
@@ -1074,7 +1231,7 @@ int main()
         int Age; 
         set <string> AccountNumbers;
         file.open("AccountsInfo.txt",ios::in);
-        //Using set TO Insert only Nee Acconts To Data Base
+        //Using set TO Insert only New Acconts To Data Base
         if(file.is_open())
         {
            while(file >> AccountNumber  >> PIN >> AccountHolderName >> AccountType >> Balance >> Age >> PhNo)
@@ -1134,5 +1291,6 @@ int main()
   }
 
  }
+ return 0;
 
 }
